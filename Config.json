@@ -1,0 +1,13 @@
+{
+  "bulletWeight_grain": 168,
+  "muzzleVelocity_metersPerSecond": 780,
+  "ballisticCoefficientType": "G7",
+  "ballisticCoefficient": 0.218,
+  "bulletDiameter_inch": 0.308,
+  "bulletLength_inch": 1.22,
+  "sightHeight_millimeter": 68,
+  "verticalMRadPerClick": 0.1,
+  "horizontalMRadPerClick": 0.1,
+  "riflingStep_inch": 11,
+  "zeroDistance_meter": 100
+}
