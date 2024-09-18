@@ -62,7 +62,12 @@ namespace RangeCard
         Constants.DefaultHumidity);
     }
 
-    public void CreateRangeCard()
+    private string FixSign(string number)
+    {
+      return (number == "-0" || number == "-0.0" || number == "-0,0") ? "0" : number;
+    }
+
+    public void CreateRangeCard(string templateName)
     {
       var ammo = new Ammunition(
            weight: new Measurement<WeightUnit>(param.bulletWeight_grain, WeightUnit.Grain),
@@ -142,40 +147,40 @@ namespace RangeCard
       int index = 0;
       foreach (var point0 in trajectory0)
       {
-        string template = File.ReadAllText("template//ragecard.svg");
+        string template = File.ReadAllText("template//" + (templateName == null ? "rangecard_large.svg" : templateName + ".svg"));
 
         template = template.Replace(Placeholders.Gun, "Tikka T3x Tac / .308 Win / Sierra 168gr");
 
         double distance = point0.Distance.In(DistanceUnit.Meter);
-        template = template.Replace(Placeholders.Distance, distance.ToString("F0"));
+        template = template.Replace(Placeholders.Distance, FixSign(distance.ToString("F0")));
 
         double drop = -point0.DropAdjustment.In(AngularUnit.MRad) / sight.VerticalClick.GetValueOrDefault().In(AngularUnit.MRad);
-        template = template.Replace(Placeholders.Drop, drop.ToString("F0"));
+        template = template.Replace(Placeholders.Drop, FixSign(drop.ToString("F0")));
 
         double windage = point0.WindageAdjustment.In(AngularUnit.MRad) / sight.HorizontalClick.GetValueOrDefault().In(AngularUnit.MRad);
-        template = template.Replace(Placeholders.Spindrift_Correction, windage.ToString("F0"));
+        template = template.Replace(Placeholders.Spindrift_Correction, FixSign(windage.ToString("F0")));
 
         double dropP = -(drop + trajectoryP800[index].DropAdjustment.In(AngularUnit.MRad) / sight.VerticalClick.GetValueOrDefault().In(AngularUnit.MRad));
-        template = template.Replace(Placeholders.P800_Correction, dropP.ToString("F1"));
+        template = template.Replace(Placeholders.P800_Correction, FixSign(dropP.ToString("F1")));
         dropP = -(drop + trajectoryP900[index].DropAdjustment.In(AngularUnit.MRad) / sight.VerticalClick.GetValueOrDefault().In(AngularUnit.MRad));
-        template = template.Replace(Placeholders.P900_Correction, dropP.ToString("F1"));
+        template = template.Replace(Placeholders.P900_Correction, FixSign(dropP.ToString("F1")));
         dropP = -(drop + trajectoryP950[index].DropAdjustment.In(AngularUnit.MRad) / sight.VerticalClick.GetValueOrDefault().In(AngularUnit.MRad));
-        template = template.Replace(Placeholders.P950_Correction, dropP.ToString("F1"));
+        template = template.Replace(Placeholders.P950_Correction, FixSign(dropP.ToString("F1")));
         dropP = -(drop + trajectoryP980[index].DropAdjustment.In(AngularUnit.MRad) / sight.VerticalClick.GetValueOrDefault().In(AngularUnit.MRad));
-        template = template.Replace(Placeholders.P980_Correction, dropP.ToString("F1"));
+        template = template.Replace(Placeholders.P980_Correction, FixSign(dropP.ToString("F1")));
         dropP = -(drop + trajectoryP1050[index].DropAdjustment.In(AngularUnit.MRad) / sight.VerticalClick.GetValueOrDefault().In(AngularUnit.MRad));
-        template = template.Replace(Placeholders.P1050_Correction, dropP.ToString("F1"));
+        template = template.Replace(Placeholders.P1050_Correction, FixSign(dropP.ToString("F1")));
 
         dropP = -(drop + trajectoryT_15[index].DropAdjustment.In(AngularUnit.MRad) / sight.VerticalClick.GetValueOrDefault().In(AngularUnit.MRad));
-        template = template.Replace(Placeholders.T_15_Correction, dropP.ToString("F1"));
+        template = template.Replace(Placeholders.T_15_Correction, FixSign(dropP.ToString("F1")));
         dropP = -(drop + trajectoryT_5[index].DropAdjustment.In(AngularUnit.MRad) / sight.VerticalClick.GetValueOrDefault().In(AngularUnit.MRad));
-        template = template.Replace(Placeholders.T_5_Correction, dropP.ToString("F1"));
+        template = template.Replace(Placeholders.T_5_Correction, FixSign(dropP.ToString("F1")));
         dropP = -(drop + trajectoryT5[index].DropAdjustment.In(AngularUnit.MRad) / sight.VerticalClick.GetValueOrDefault().In(AngularUnit.MRad));
-        template = template.Replace(Placeholders.T5_Correction, dropP.ToString("F1"));
+        template = template.Replace(Placeholders.T5_Correction, FixSign(dropP.ToString("F1")));
         dropP = -(drop + trajectoryT25[index].DropAdjustment.In(AngularUnit.MRad) / sight.VerticalClick.GetValueOrDefault().In(AngularUnit.MRad));
-        template = template.Replace(Placeholders.T25_Correction, dropP.ToString("F1"));
+        template = template.Replace(Placeholders.T25_Correction, FixSign(dropP.ToString("F1")));
         dropP = -(drop + trajectoryT35[index].DropAdjustment.In(AngularUnit.MRad) / sight.VerticalClick.GetValueOrDefault().In(AngularUnit.MRad));
-        template = template.Replace(Placeholders.T35_Correction, dropP.ToString("F1"));
+        template = template.Replace(Placeholders.T35_Correction, FixSign(dropP.ToString("F1")));
 
         for (int windSpeed = 0; windSpeed < 5; windSpeed++)
         {
@@ -187,12 +192,12 @@ namespace RangeCard
             double windage2 = pointW.WindageAdjustment.In(AngularUnit.MRad) / sight.HorizontalClick.GetValueOrDefault().In(AngularUnit.MRad) - windage;
 
             string placeholderW = Placeholders.Wind_Prefix + windSpeed.ToString() + "_" + angle.ToString("D2");
-            template = template.Replace(placeholderW, windage2.ToString("F0"));
+            template = template.Replace(placeholderW, FixSign(windage2.ToString("F0")));
 
             double drop2 = -pointW.DropAdjustment.In(AngularUnit.MRad) / sight.HorizontalClick.GetValueOrDefault().In(AngularUnit.MRad) - drop;
 
             string placeholderD = Placeholders.Drop_Prefix + windSpeed.ToString() + "_" + angle.ToString("D2");
-            template = template.Replace(placeholderD, drop2.ToString("F0"));
+            template = template.Replace(placeholderD, FixSign(drop2.ToString("F0")));
           }
         }
 

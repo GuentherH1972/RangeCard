@@ -3,6 +3,7 @@ using System;
 using System.Text.Json;
 using Gehtsoft.Measurements;
 using System.IO;
+using System.Linq;
 
 namespace RangeCard
 {
@@ -19,7 +20,7 @@ namespace RangeCard
       Params param = JsonSerializer.Deserialize<Params>(jsonString)!;
 
       RangeCard rangeCard = new RangeCard(param);
-      rangeCard.CreateRangeCard();
+      rangeCard.CreateRangeCard(args.ElementAtOrDefault(0));
     }
   }
 }
