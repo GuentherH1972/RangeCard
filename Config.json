@@ -1,4 +1,6 @@
 {
+  "name": "Tikka T3x Tac / .308 Win / Sierra 168gr",
+  "template": "rangecard_large.svg",
   "bulletWeight_grain": 168,
   "muzzleVelocity_metersPerSecond": 780,
   "ballisticCoefficientType": "G7",

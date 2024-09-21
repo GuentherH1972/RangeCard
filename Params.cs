@@ -9,6 +9,8 @@ namespace RangeCard
   {
     public Params()
     {
+      name = "my gun";
+      template = "rangecard_large.svg";
       bulletWeight_grain = 168;
       muzzleVelocity_metersPerSecond = 780;
       ballisticCoefficientType = DragTableId.G7;
@@ -22,6 +24,8 @@ namespace RangeCard
       zeroDistance_meter = 100;
     }
 
+    public string name { get; set; }
+    public string template { get; set; }
     public double bulletWeight_grain { get; set; }
     public double muzzleVelocity_metersPerSecond { get; set; }
     [JsonConverter(typeof(JsonStringEnumConverter<DragTableId>))]

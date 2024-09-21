@@ -20,7 +20,7 @@ namespace RangeCard
       Params param = JsonSerializer.Deserialize<Params>(jsonString)!;
 
       RangeCard rangeCard = new RangeCard(param);
-      rangeCard.CreateRangeCard(args.ElementAtOrDefault(0));
+      rangeCard.CreateRangeCard();
     }
   }
 }

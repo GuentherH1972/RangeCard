@@ -67,7 +67,7 @@ namespace RangeCard
       return (number == "-0" || number == "-0.0" || number == "-0,0") ? "0" : number;
     }
 
-    public void CreateRangeCard(string templateName)
+    public void CreateRangeCard()
     {
       var ammo = new Ammunition(
            weight: new Measurement<WeightUnit>(param.bulletWeight_grain, WeightUnit.Grain),
@@ -147,9 +147,9 @@ namespace RangeCard
       int index = 0;
       foreach (var point0 in trajectory0)
       {
-        string template = File.ReadAllText("template//" + (templateName == null ? "rangecard_large.svg" : templateName + ".svg"));
+        string template = File.ReadAllText("template//" + param.template);
 
-        template = template.Replace(Placeholders.Gun, "Tikka T3x Tac / .308 Win / Sierra 168gr");
+        template = template.Replace(Placeholders.Gun, param.name);
 
         double distance = point0.Distance.In(DistanceUnit.Meter);
         template = template.Replace(Placeholders.Distance, FixSign(distance.ToString("F0")));
